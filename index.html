@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no"/>
+    <title>来e张免费冲印</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+
+        }
+
+        section img {
+            width: 100%;
+            height: auto;
+        }
+        .center{
+            display: -webkit-box; /* OLD: Safari, iOS 6 and earlier; Android browser, older WebKit */
+            display: -moz-box; /* OLD: Firefox (can be buggy) */
+            display: -ms-flexbox; /* OLD: IE 10 */
+            display: -webkit-flex; /* FINAL, PREFIXED, Chrome 21+ */
+            display: flex; /* FINAL: Opera 12.1+, Firefox 22+ */
+            -webkit-box-align: center;
+            -moz-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            -moz-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+           height: 50px;
+        line-height: 50px;
+        }
+
+    </style>
+
+</head>
+<body>
+
+
+<div>
+    <section><img src="http://download.dl.quzhuan.me/image/photoToOne/share_1.png"></section>
+    <section id="getShare" style="font-size: 16px;
+            text-align:center; color: #FFFFFF;background: url('http://download.dl.quzhuan.me/image/photoToOne/share_2.png') no-repeat;
+    background-size: 100% 100%;
+           width: 100%;
+           height: 50px;
+           line-height: 47px;
+          ">
+      立即领取
+        <!--<img src="http://download.dl.quzhuan.me/image/photoToOne/share_2.png">-->
+    </section>
+    <section>
+        <p style="font-size: 14px; color: #777777; text-align: center;line-height: 2;">分享说明:分享成功后请返回来e张</p>
+        <img src="http://download.dl.quzhuan.me/image/photoToOne/share_3.png"></section>
+</div>
+<script>
+   var btn=document.getElementById('getShare');
+   btn.onclick=function(){
+      // alert('dsa')
+        //判断手机
+        var ua = navigator.userAgent.toLowerCase();
+        var isAndroid = /android/.test(ua);
+        var isiOS = /iphone|ipad|ipod/.test(ua);
+        if (isiOS) {
+            //iOS链接方法
+            function setupWebViewJavascriptBridge(callback) {
+                if (window.WebViewJavascriptBridge) {
+                    return callback(WebViewJavascriptBridge);
+                }
+                if (window.WVJBCallbacks) {
+                    return window.WVJBCallbacks.push(callback);
+                }
+                window.WVJBCallbacks = [callback];
+                var WVJBIframe = document.createElement('iframe');
+                WVJBIframe.style.display = 'none';
+                WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
+                document.documentElement.appendChild(WVJBIframe);
+                setTimeout(function () {
+                    document.documentElement.removeChild(WVJBIframe)
+                }, 0)
+            }
+
+            //iOS桥的链接
+            setupWebViewJavascriptBridge(function (bridge) {
+                var uniqueId = 1
+
+                function log(message, data) {
+                    var log = document.getElementById('one')
+                }
+
+                //html5创建方法，iOS进行调用
+                bridge.registerHandler('htmlGoodsIdHandler', function (data, responseCallback) {
+                    var responseData = {'Javascript Says': '回调成功!'}
+                    responseCallback(responseData)
+                })
+                //iOS创建方法，html5进行调用
+
+                bridge.callHandler('iOSlaiezhangShare', {activityNumber: '01'},function (response) {
+                })
+
+                console.log(num + "fdojkspo")
+
+            })
+        }
+        if (isAndroid) {
+            //安卓链接方法
+            function testClick() {
+                //send message to native
+                var data = {goodsId: num};
+                window.WebViewJavascriptBridge.send(
+                        data
+                        , function (responseData) {
+                        }
+                );
+            }
+
+            //html传给native、
+
+
+            //call native method
+            window.WebViewJavascriptBridge.callHandler(
+                    'submitFromWeb'
+                    , {'code': "1000", 'activityNumber': '01'}
+                    , function (responseData) {
+                    }
+            );
+
+            console.log(num + "androil")
+
+            function connectWebViewJavascriptBridge(callback) {
+                if (window.WebViewJavascriptBridge) {
+                    callback(WebViewJavascriptBridge)
+                } else {
+                    document.addEventListener(
+                            'WebViewJavascriptBridgeReady'
+                            , function () {
+                                callback(WebViewJavascriptBridge)
+                            },
+                            false
+                    );
+                }
+            }
+
+            connectWebViewJavascriptBridge(function (bridge) {
+                //html接收值
+                bridge.init(function (message, responseCallback) {
+                    console.log('JS got a message', message);
+                    var data = {
+                        'Javascript Responds': '测试中文!'
+                    };
+                    console.log('JS responding with', data);
+                    responseCallback(data);
+                });
+                //
+                bridge.registerHandler("functionInJs", function (data, responseCallback) {
+                    var responseData = "html回调成功";
+                    responseCallback(responseData);
+                });
+            })
+        }
+    }
+
+</script>
+</body>
+</html>
